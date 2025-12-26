@@ -15,7 +15,7 @@ if "active_tab" not in st.session_state:
     st.session_state.active_tab = 0
 if "input_defaults" not in st.session_state:
     st.session_state.input_defaults = {
-        "currentAge": 0, "retirementAge": 0, "joinAge": 0, "serviceYears": 0,
+        "currentAge": , "retirementAge": 0, "joinAge": 0, "serviceYears": 0,
         "severancePay": 0.0,
         "dcStartAge": 0, "dcEndAge": 0, "dcCurrentBalance": 0.0, "dcMonthlyContribution": 0.0, "dcReturnRate": 0.0,
         "idecoStartAge": 0, "idecoEndAge": 0, "idecoCurrentBalance": 0.0, "idecoMonthlyContribution": 0.0, "idecoReturnRate": 0.0,
