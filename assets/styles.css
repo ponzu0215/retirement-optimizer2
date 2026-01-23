@@ -1,0 +1,288 @@
+/* assets/styles.css
+   Ported from the original HTML (退職金・年金受取最適化シミュレーター v4.4)
+   with minimal Streamlit-specific adjustments.
+*/
+:root{
+  --bg1:#667eea;
+  --bg2:#764ba2;
+  --accent:#667eea;
+  --orange1:#f59e0b;
+  --orange2:#d97706;
+  --text:#333;
+  --muted:#666;
+  --card:#fff;
+  --soft:#f9f9f9;
+}
+html, body, [data-testid="stAppViewContainer"]{ height:100%; }
+body, [data-testid="stAppViewContainer"]{
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%) !important;
+}
+.mz-container{
+  max-width: 1200px; margin: 0 auto;
+  background: white; border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+.mz-header{
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+  color: white; padding: 30px; text-align: center;
+}
+.mz-header h1{ font-size: 28px; margin-bottom: 10px; }
+.mz-header p{ font-size: 14px; opacity: 0.9; }
+.mz-tabs{
+  display:flex; background:#f5f5f5;
+  border-bottom:2px solid #ddd;
+}
+.mz-tab{
+  flex:1; padding: 20px; text-align:center;
+  font-size:16px; font-weight:bold;
+  background:#f5f5f5; border:none;
+}
+.mz-tab.active{
+  background:white; color: var(--accent);
+  border-bottom:3px solid var(--accent);
+}
+.mz-section{
+  margin-bottom: 30px; padding: 20px;
+  background: var(--soft);
+  border-radius: 10px;
+  border-left: 4px solid var(--accent);
+}
+.mz-section h2{ color: var(--accent); margin-bottom: 15px; font-size: 20px; }
+.result-card{
+  background: white; border-radius: 15px;
+  padding: 25px; margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s;
+}
+.result-card:hover{ box-shadow: 0 8px 12px rgba(0,0,0,0.15); }
+.result-card.recommended{
+  border-color: var(--orange1);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+}
+.result-card h3{ color: var(--text); margin-bottom: 10px; font-size: 22px; }
+.badge{
+  display:inline-block;
+  background: linear-gradient(135deg, var(--orange1), var(--orange2));
+  color:white; padding: 5px 15px;
+  border-radius: 20px; font-size:14px;
+  margin-left:10px;
+}
+.result-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+.result-item{ padding: 15px; background: #f9f9f9; border-radius: 8px; }
+.result-item label{ display:block; color:#666; font-size:14px; margin-bottom: 5px; }
+.result-item .value{ display:block; color:#333; font-size:24px; font-weight:bold; }
+.result-item .value.orange{ color: var(--orange1); }
+.mz-table{ width:100%; border-collapse: collapse; margin-top: 20px; }
+.mz-table th, .mz-table td{ padding: 12px; text-align:left; border-bottom: 1px solid #ddd; }
+.mz-table th{ background:#f9f9f9; font-weight:bold; color: var(--accent); }
+.highlight-orange-header{
+  background: linear-gradient(135deg, var(--orange1), var(--orange2)) !important;
+  color: white !important;
+}
+.highlight-orange-cell{ background: #fef3c7 !important; font-weight:bold !important; }
+.lumpsum-detail{ margin-top: 20px; padding: 15px; background: #f0f4ff; border-radius: 10px; }
+.lumpsum-detail h4{ color: var(--accent); margin-bottom: 15px; }
+.lumpsum-item{
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  background:white;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+.lumpsum-item.total{
+  background: #e0e7ff;
+  font-weight:bold;
+  margin-top: 10px;
+  border-top: 2px solid var(--accent);
+}
+.lumpsum-label{ font-weight:500; }
+.lumpsum-age{ color:#666; font-size:0.9em; }
+.lumpsum-amount,.lumpsum-tax,.lumpsum-net{ text-align:right; }
+.cashflow-summary{
+  background:#f9fafb;
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:20px;
+}
+.cashflow-summary h4{ color: var(--accent); margin-bottom:15px; }
+.cashflow-section{ margin-bottom:20px; }
+.cashflow-section-title{
+  font-weight:bold;
+  color:#374151;
+  margin-bottom:10px;
+  padding-bottom:5px;
+  border-bottom:2px solid #e5e7eb;
+}
+.cashflow-line{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #e5e7eb;
+}
+.cashflow-line.total{
+  font-weight:bold;
+  color:#1e40af;
+  border-top:2px solid #1e40af;
+  margin-top:10px;
+  padding-top:10px;
+}
+.block-container{ padding-top: 1.0rem !important; padding-bottom: 2.0rem !important; }
+[data-testid="stNumberInput"] input{ border-radius: 8px !important; border: 2px solid #ddd !important; }
+
+
+/* --- UI改善（情報入力タブの外枠/入力欄） --- */
+/* Streamlitのフォーム全体を白背景＋薄灰枠に（.mz-section はウィジェットを内包できないため） */
+div[data-testid="stForm"]{
+  background: #fff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+}
+
+/* NumberInput / Selectbox の入力欄を白背景＋薄い灰色枠に */
+div[data-testid="stNumberInput"] input{
+  background: #fff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+}
+div[data-testid="stSelectbox"] div[role="combobox"]{
+  background: #fff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+}
+
+/* 見出しブロック（.mz-section）は白背景に */
+.mz-section{
+  background: #fff !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+
+/* === 追加改善（情報入力タブの見やすさ / 計算ボタン / 比較表背景） === */
+
+/* 情報入力：各セクションを薄灰背景＋左青ライン（外枠は白フォームのまま） */
+.mz-section{
+  background: #f5f6f8 !important;                 /* 薄い灰色 */
+  border: 1px solid #e5e7eb !important;           /* 薄い灰枠 */
+  border-left: 4px solid var(--accent) !important;/* 左青ライン */
+  border-radius: 12px !important;
+}
+
+/* 「最適戦略を計算する」ボタンを青基調に */
+div[data-testid="stFormSubmitButton"] button{
+  background: var(--accent) !important;
+  color: #fff !important;
+  border: 1px solid var(--accent) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  font-weight: 700 !important;
+}
+div[data-testid="stFormSubmitButton"] button:hover{
+  filter: brightness(0.95);
+}
+
+/* 比較表：おすすめ以外（通常セル）は白背景に固定（おすすめは highlight-orange-cell のまま） */
+.mz-table{
+  background: #fff !important;
+}
+.mz-table td{
+  background: #fff !important;
+}
+
+/* =========================
+   Streamlit help (?) icon
+   ========================= */
+
+button[data-testid="stHelpIcon"] {
+  background-color: #4f6ef7;       /* 背景：UIの青に寄せる */
+  border-radius: 50%;              /* 丸ボタン */
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin-left: 6px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 2px 6px rgba(79, 110, 247, 0.35);
+  transition: all 0.2s ease;
+}
+
+/* ? アイコン自体 */
+button[data-testid="stHelpIcon"] svg {
+  width: 14px;
+  height: 14px;
+  color: white;                    /* ? を白に */
+}
+
+/* ホバー時（ボタン感を強く） */
+button[data-testid="stHelpIcon"]:hover {
+  background-color: #3b5bdb;       /* 少し濃い青 */
+  transform: scale(1.12);
+  box-shadow: 0 4px 10px rgba(59, 91, 219, 0.45);
+}
+
+/* フォーカス時（アクセシビリティ） */
+button[data-testid="stHelpIcon"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.35);
+}
+
+/* =========================
+   平均標準報酬月額：ラベル横の説明ボタン
+   ========================= */
+
+.avg-salary-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 6px 0;
+}
+
+.avg-salary-label > span:first-child {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 「平均標準報酬月額って？」を白背景・黒文字・青枠のピルボタンに */
+.avg-salary-tooltip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+
+  background: #ffffff;
+  color: #111111;
+  border: 1.5px solid #4f6ef7;
+  border-radius: 999px;
+  padding: 6px 10px;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+
+  box-shadow: 0 1px 4px rgba(79, 110, 247, 0.18);
+  cursor: help;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
+}
+
+.avg-salary-tooltip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(79, 110, 247, 0.25);
+  background-color: rgba(79, 110, 247, 0.06);
+}
+
+.avg-salary-tooltip:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.22);
+}
